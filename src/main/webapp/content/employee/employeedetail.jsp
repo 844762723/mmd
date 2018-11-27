@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <html>
 <head>
     <title>员工维护详细 - 笑享租</title>
@@ -29,8 +30,8 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <form class="form-horizontal" id="validation-form-user" method="post">
-            <input type="hidden" name="uid" value="${requestScope.user.uid}">
+        <form class="form-horizontal" id="validation-form-employee" method="post">
+            <input type="hidden" name="id" value="${requestScope.employee.id}">
 
             <div class="space-20"></div>
 
@@ -39,7 +40,7 @@
                     <h4 class="widget-title">员工信息</h4>
                     <div class="widget-toolbar">
                         <a href="#" data-action="collapse">
-                            <i class="ace-icon fa fa-chevron-up"></i>
+                            <i class="ace-icon fa fa-chevron-up"></i>s
                         </a>
                     </div>
                 </div>
@@ -47,29 +48,28 @@
                     <div class="widget-main" style="min-height: 200px;">
                         <div class="row">
                             <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-user_no">登录名<span class="red">*</span></label>
-                                <input class="form-control" id="form-user-user_no" name="user_no" value="${requestScope.user.user_no}">
+                                <label class="control-label" for="form-employee-loginNo">登录名<span class="red">*</span></label>
+                                <input class="form-control" id="form-employee-loginNo" name="loginNo" value="${requestScope.employee.loginNo}">
+                            </div>
+                            <c:if test="${empty requestScope.employee}">
+                                <div class="col-xs-3 form-group">
+                                    <label class="control-label" for="form-employee-password">密码<span class="red">*</span></label>
+                                    <input type="password" class="form-control" id="form-employee-password" name="password" value="${requestScope.employee.password}">
+                                </div>
+                            </c:if>
+
+                            <div class="col-xs-3 form-group">
+                                <label class="control-label" for="form-employee-name">姓名<span class="red">*</span></label>
+                                <input class="form-control" id="form-employee-name" name="name" value="${requestScope.employee.name}"/>
                             </div>
 
                             <div class="col-xs-3  form-group">
-                                <label for="form-user-sex">性别</label>
-                                <select name="sex" id="form-user-sex" class="form-control">
+                                <label for="form-employee-sex">性别</label>
+                                <select name="sex" id="form-employee-sex" class="form-control">
                                     <option value="1">男</option>
                                     <option value="2">女</option>
                                 </select>
                             </div>
-
-                            <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-username">姓名<span class="red">*</span></label>
-                                <input class="form-control" id="form-user-username" name="username" value="${requestScope.user.username}"/>
-                            </div>
-
-                            <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-birthday">生日</label>
-                                <input class="form-control date-picker" id="form-user-birthday" type="text" name="birthday"
-                                       data-date-format="yyyy-mm-dd" value="${requestScope.user.birthday}" placeholder="请选择您的出生年月">
-                            </div>
-
 
                         </div>
 
@@ -77,25 +77,24 @@
 
                         <div class="row">
                             <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-cellphone">手机</label>
-                                <input class="form-control" id="form-user-cellphone" type="text" name="cellphone"
-                                       value="${requestScope.user.cellphone}"/>
+                                <label class="control-label" for="form-employee-birthday">生日</label>
+                                <input class="form-control date-picker" id="form-employee-birthday" type="text" name="birthday"
+                                       data-date-format="yyyy-mm-dd" value="${requestScope.employee.birthday}" placeholder="请选择您的出生年月">
+                            </div>
+                            <div class="col-xs-3 form-group">
+                                <label class="control-label" for="form-employee-cellphone">手机</label>
+                                <input class="form-control" id="form-employee-cellphone" type="text" name="cellphone"
+                                       value="${requestScope.employee.cellphone}"/>
                             </div>
 
                             <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-age">年龄</label>
-                                <input id="form-user-age" class="form-control" name="age" value="${requestScope.user.age}"/>
+                                <label class="control-label" for="form-employee-age">年龄</label>
+                                <input id="form-employee-age" class="form-control" name="age" value="${requestScope.employee.age}"/>
                             </div>
 
                             <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-telephone">座机电话</label>
-                                <input id="form-user-telephone" class="form-control" value="${requestScope.user.telephone}"
-                                       name="telephone"/>
-                            </div>
-
-                            <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-weixin">微信</label>
-                                <input id="form-user-weixin" class="form-control" value="${requestScope.user.weixin}"
+                                <label class="control-label" for="form-employee-weixin">微信</label>
+                                <input id="form-employee-weixin" class="form-control" value="${requestScope.employee.weixin}"
                                        name="weixin"/>
                             </div>
 
@@ -104,14 +103,14 @@
                         <div class="space-12"></div>
                         <div class="row">
                             <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-qq">QQ</label>
-                                <input id="form-user-qq" class="form-control" value="${requestScope.user.qq}"
+                                <label class="control-label" for="form-employee-qq">QQ</label>
+                                <input id="form-employee-qq" class="form-control" value="${requestScope.employee.qq}"
                                        name="qq"/>
                             </div>
 
                             <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-dep_id">所属部门</label>
-                                <select name="dep_id" id="form-user-dep_id" class="form-control">
+                                <label class="control-label" for="form-employee-depId">所属部门</label>
+                                <select name="depId" id="form-employee-depId" class="form-control">
                                     <option value=""></option>
                                     <option value="1">财务部</option>
                                     <option value="2">市场部</option>
@@ -124,35 +123,35 @@
                                 </select>
                             </div>
 
-                            <div class="col-xs-3 form-group">
-                                <label class="control-label" for="form-user-post_id">
+                           <%-- <div class="col-xs-3 form-group">
+                                <label class="control-label" for="form-employee-postId">
                                     职位
                                     <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="left" data-content="职位设置为经理、主管，可以查看所有客户订单信息， 设置为员工时，只能查看已分配的代理商上传的客户订单信息"
                                           title="" data-original-title="设置说明">?</span>
                                 </label>
-                                <select id="form-user-post_id" name="post_id" class="form-control">
+                                <select id="form-employee-postId" name="postId" class="form-control">
                                     <option value=""></option>
                                     <option value="1">主管</option>
                                     <option value="2">经理</option>
                                     <option value="3">员工</option>
                                 </select>
-                            </div>
-
+                            </div>--%>
+<%--
                             <div class="col-xs-3 form-group postshow">
                                 <label class="control-label" for="form-user-agency_ids">代理商</label>
                                 <select id="form-user-agency_ids" name="agency_ids" class="chosen-select form-control" multiple="multiple"
                                         data-placeholder="分配代理商...">
                                 </select>
-                            </div>
+                            </div>--%>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="space-12"></div>
-            <div class="row" id="user_save_info">
+            <div class="row" id="employee_save_info">
                 <div class="col-xs-4 col-xs-offset-5">
-                    <input type="submit" class="btn btn-primary" id="user_save" value="保存">
+                    <input type="submit" class="btn btn-primary" id="employee_save" value="保存">
                     <input type="reset" class="btn" style="margin-left: 20px;" onclick="resetForm()" value="重置表单">
                 </div>
             </div>
@@ -200,56 +199,56 @@
             //先设置信息，在设置选择框信息
             $('.chosen-select').chosen({allow_single_deselect: true});
 
-            myAjax("/base/getAllAgency", null, function(result){
-                if(result.code === 1) {
-                    createSelect(result.data);
-                }else{
-                    showErrorInfo(result.message);
-                }
-            });
+            // myAjax("/base/getAllAgency", null, function(result){
+            //     if(result.code === 1) {
+            //         createSelect(result.data);
+            //     }else{
+            //         showErrorInfo(result.message);
+            //     }
+            // });
             function createSelect(data) {
                 var html = '<option value="">&nbsp;</option>';
-                var agency_ids = '${requestScope.user.agency_ids}';
-                data.forEach(function (info) {
-                    if(agency_ids) {
-                        if((','+agency_ids+',').indexOf(','+info.aid+',') > -1) {
-                            html += '<option selected value="' + info.aid + '">'+info.agency_cityname+'----' + info.aname + '</option>';
-                        }else{
-                            html += '<option  value="' + info.aid + '">'+info.agency_cityname+'----' + info.aname + '</option>';
-                        }
-                    }else{
-                        html += '<option value="' + info.aid + '">'+info.agency_cityname+'----' + info.aname + '</option>';
-                    }
-                });
-                $("#form-user-agency_ids").html(html);
+             <%--var agency_ids = '${requestScope.employee.agency_ids}';--%>
+                <%--data.forEach(function (info) {--%>
+                    <%--if(agency_ids) {--%>
+                        <%--if((','+agency_ids+',').indexOf(','+info.aid+',') > -1) {--%>
+                            <%--html += '<option selected value="' + info.aid + '">'+info.agency_cityname+'----' + info.aname + '</option>';--%>
+                        <%--}else{--%>
+                            <%--html += '<option  value="' + info.aid + '">'+info.agency_cityname+'----' + info.aname + '</option>';--%>
+                        <%--}--%>
+                    <%--}else{--%>
+                        <%--html += '<option value="' + info.aid + '">'+info.agency_cityname+'----' + info.aname + '</option>';--%>
+                    <%--}--%>
+                <%--});--%>
+                // $("#form-emplyee-agency_ids").html(html);
                 $(".chosen-select").trigger("chosen:updated");
             }
 
-            if('${requestScope.user.uid}') {
-                $("select[name=sex]").val('${requestScope.user.sex}');
-                $("select[name=dep_id]").val('${requestScope.user.dep_id}');
-                $("select[name=post_id]").val('${requestScope.user.post_id}');
+            if('${requestScope.employee.id}') {
+                $("select[name=sex]").val('${requestScope.employee.sex}');
+                $("select[name=depId]").val('${employee.depId}');
+               <%--/* $("select[name=post_id]").val('${requestScope.employee.post_id}');*/--%>
 
             }
         });
 
-        $("#validation-form-user").submit(function (e) {
+        $("#validation-form-employee").submit(function (e) {
             e.preventDefault();
-            var flag = $("#validation-form-user").valid();
+            var flag = $("#validation-form-employee").valid();
             if (flag) {
                 $(this).ajaxSubmit({
-                    url: projectUrl + "/user/addOrUpdUser",
+                    url: projectUrl + "/employee/addUpdEmployee",
                     type: "post",
                     success: function (result) {
                         bootbox.hideAll();
                         if (result.code === 1) {
                             showInfo("操作成功! 即将返回主列表")
-                            $("#user_save_info").hide();
+                            $("#employee_save_info").hide();
                             setTimeout(function(){
                                 history.back();
                             }, 4000);
                         } else {
-                            showError("操作失败！错误信息：" + result.message);
+                            showErrorInfo("操作失败！错误信息：" + result.message);
                         }
                     },
                     error: function (err) {
@@ -261,14 +260,14 @@
             return false;
         });
 
-        $("#validation-form-user").validate({
+        $("#validation-form-employee").validate({
             errorElement: 'div',
             errorClass: 'help-block',
             focusInvalid: false,
             ignore: ":hidden:not(select)",
             rules: {
-                user_no: {required: true},
-                username: {required: true},
+                loginNo: {required: true},
+                name: {required: true},
                 age: {number:true},
                 cellphone: {number: true},
             },

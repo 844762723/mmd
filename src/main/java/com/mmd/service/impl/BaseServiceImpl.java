@@ -28,6 +28,7 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public Result getAllDepartment() {
         List<Department> list = baseDao.getAllDepartment();
+        System.out.println(list);
         return new Result(1, "查找成功！", list);
     }
 

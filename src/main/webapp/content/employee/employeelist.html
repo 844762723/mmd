@@ -10,21 +10,21 @@
             <form id="queryForm" class="form-horizontal">
                 <div class="form-group">
                     <div class="col-xs-3">
-                        <label for="user_no" class="col-sm-3 control-label no-padding-right">登录名:</label>
+                        <label for="loginNo" class="col-sm-3 control-label no-padding-right">登录名:</label>
                         <div class="col-sm-9">
-                            <input type="text" id="user_no" name="user_no" class="form-control"/>
+                            <input type="text" id="loginNo" name="loginNo" class="form-control"/>
                         </div>
                     </div>
                     <div class="col-xs-3">
-                        <label for="username" class="col-sm-3 control-label no-padding-right">姓名:</label>
+                        <label for="name" class="col-sm-3 control-label no-padding-right">姓名:</label>
                         <div class="col-sm-9">
-                            <input type="text" id="username" name="username" class="form-control"/>
+                            <input type="text" id="name" name="name" class="form-control"/>
                         </div>
                     </div>
                     <div class="col-xs-3">
                         <label class="col-sm-3 control-label no-padding-right">所属部门:</label>
                         <div class="col-sm-9">
-                            <select id="dep_id" name="dep_id" class="chosen-select form-control"
+                            <select id="dep_id" name="depId" class="chosen-select form-control"
                                     data-placeholder="选择部门...">
                             </select>
                         </div>
@@ -45,8 +45,8 @@
         </div>
         <div class="space-12"></div>
         <div class="fc-button-group" style="margin-left: 5px;">
-            <a id="user_add" data-rel="tooltip" title="" data-original-title="新增" href="javascript:void(0)" style="padding: 2px;"><i class="ace-icon fa fa-plus-circle purple bigger-125"></i></a>
-            <a id="user_edit" data-rel="tooltip" title="" data-original-title="修改" href="javascript:void(0)" style="padding: 2px;"><i class="ace-icon fa fa-pencil blue bigger-125"></i></a>
+            <a id="employee_add" data-rel="tooltip" title="" data-original-title="新增" href="javascript:void(0)" style="padding: 2px;"><i class="ace-icon fa fa-plus-circle purple bigger-125"></i></a>
+            <a id="employee_edit" data-rel="tooltip" title="" data-original-title="修改" href="javascript:void(0)" style="padding: 2px;"><i class="ace-icon fa fa-pencil blue bigger-125"></i></a>
         </div>
         <table id="grid-table"></table>
         <div id="grid-pager"></div>
@@ -77,18 +77,18 @@
         //inline scripts related to this page
         jQuery(function ($) {
             //添加
-            $("#user_add").click(function(){
-                toCustomUrl('page/user/userdetail.jsp');
+            $("#employee_add").click(function(){
+                toCustomUrl('page/employee/employeedetail.jsp');
             });
             //修改
-            $("#user_edit").click(function(){
+            $("#employee_edit").click(function(){
                 var ids = $(grid_selector).jqGrid('getGridParam','selarrrow');
                 if(!ids || ids.length === 0) {
                     showWarnInfo("请先选择一条记录", 3000);
                 }else if(ids.length>1) {
                     showWarnInfo("只能选择一条记录进行修改", 3000);
                 }else{
-                    toCustomUrl("server/user/toUserDetail?id="+ids[0]);
+                    toCustomUrl("server/employee/toUserDetail?id="+ids[0]);
                 }
             });
 
@@ -121,7 +121,7 @@
             myAjax("/base/getAllDepartment", null, function (result) {
                 if (result.code == 1) {
                     depObj = result.data;
-                    allDep = toSelectData(result.data, "dep_id", "dep_name");
+                    allDep = toSelectData(result.data, "depId", "depName");
                     //设置选择框中信息
                     createDepSelect(result.data);
                 } else {
@@ -140,7 +140,7 @@
             function createDepSelect(data) {
                 var html = '<option value="">&nbsp;</option>';
                 data.forEach(function (info) {
-                    html += '<option value="' + info.dep_id + '">' + info.dep_name + '</option>';
+                    html += '<option value="' + info.depId + '">' + info.depName + '</option>';
                 });
                 $("#dep_id").html(html);
                 $(".chosen-select").trigger("chosen:updated");
@@ -171,11 +171,11 @@
             jQuery(grid_selector).jqGrid({
                 // direction: "rtl",
                 subGrid: false, //是否展示子table
-                url: projectUrl + "/user/getAllUser", //获取所用用户信息
+                url: projectUrl + "/employee/getAllEmployee", //获取所用用户信息
                 datatype: "json",
                 mtype: 'POST',
                 height: $(window).height() - 360,
-                colNames: ['ID', '登录名', '姓名', '年龄', '生日', '性别', '微信', 'QQ', '手机', '座机', '所属部门', '职位', '代理商'],
+                colNames: ['ID',  '姓名', '登录名','部门',  '手机','年龄', '性别', '微信', 'QQ'],
                 colModel: [
                     // {
                     //     name: 'myac',
@@ -231,31 +231,29 @@
                     //         onError: onerror,
                     //     }
                     // },
-                    {name: 'uid', key: true, width: 60, hidden: true, editable: true},
+                    {name: 'id', key: true, width: 60, hidden: true, editable: true},
                     {
-                        name: 'user_no',
-                        index: 'user_no',
-                        width: 60,
-                        editable: true,
-                        editrules: {required: true, custom: true, custom_func: checnkCustom}
-                    },
-                    {
-                        name: 'username',
-                        index: 'username',
-                        width: 150,
+                        name: 'name',
+                        index: 'name',
+                        width: 100,
                         sortable: false,
                         editable: true,
                         editrules: {required: true}
                     },
-                    {name: 'age', index: 'age', width: 90, editable: true},
                     {
-                        name: 'birthday',
-                        index: 'birthday',
-                        width: 150,
+                        name: 'loginNo',
+                        index: 'loginNo',
+                        width: 100,
                         editable: true,
-                        sorttype: "date",
-                        unformat: pickDate
                     },
+                    {
+                        name: 'depName',
+                        index: 'depName',
+                        width: 100,
+                        editable: true,
+                    },
+                    {name: 'cellphone', index: 'cellphone', width: 100, editable: true},
+                    {name: 'age', index: 'age', width: 90, editable: true},
                     {
                         name: 'sex',
                         index: 'sex',
@@ -267,19 +265,6 @@
                     },
                     {name: 'weixin', index: 'weixin', width: 90, editable: true, edittype: "text"},
                     {name: 'qq', index: 'qq', width: 100, editable: true},
-                    {name: 'cellphone', index: 'cellphone', width: 100, editable: true},
-                    {name: 'telephone', index: 'telephone', width: 100, editable: true},
-                    {
-                        name: 'dep_id',
-                        index: 'dep_id',
-                        editable: true,
-                        formatter: pickDep,
-                        edittype: "select",
-                        editoptions: {value: allDep}
-                    },
-                    {name: 'post_id', index: 'post_id', width: 100, editable: true, formatter:pickPost,  edittype: "select",
-                        editoptions: {value: allPostInfo}},
-                    {name: 'agencys', index: 'agencys'},
                 ],
                 viewrecords: true,
                 rowNum: 10,
@@ -289,11 +274,11 @@
                 altRows: false,
                 multiselect: true,
                 multiboxonly: true,
-                editurl: projectUrl + "/user/CRUD_UserInfo", //用户的增删改操作
+                editurl: projectUrl + "/employee/CRUD_UserInfo", //用户的增删改操作
             });
 
             function queryDetail(id) {
-                toCustomUrl("server/user/toUserDetail?id="+id);
+                toCustomUrl("server/employee/toUserDetail?id="+id);
             }
 
             function customElem() {

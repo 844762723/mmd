@@ -4,14 +4,14 @@
     <insert id="addUserInfo" parameterType="employee">
         INSERT INTO employee(name, login_no, password, cellphone, age, sex, birthday,
          weixin, qq, role_id, dep_id, post_id, crtdate, crtuser,
-        update, upduser, headicon, recsts)
+        `update`, upduser, headicon, recsts)
         VALUES (#{name}, #{loginNo}, #{password}, #{cellphone}, #{age}, #{sex}, #{birthday},
-         #{weixin}, #{qq}, #{role_id}, #{dep_id}, #{post_id}, now(), #{crtuser},
+         #{weixin}, #{qq}, #{roleId}, #{depId}, #{postId}, now(), #{crtuser},
         now(), #{upduser}, #{headicon}, '1')
     </insert>
 
     <insert id="addRole" useGeneratedKeys="true" keyProperty="rid" keyColumn="rid">
-        insert into role(rname, rdesc, crtdate, crtuser, upddate, upduser, recsts)
+        insert into role(rname, rdesc, crtdate, crtuser, `update`, upduser, recsts)
         VALUE (#{rname}, #{rdesc}, now(), #{crtuser}, now(), #{crtuser}, '1')
     </insert>
 
@@ -26,13 +26,15 @@
         LEFT JOIN menu m ON CONCAT(',', r.m_ids, ',') LIKE CONCAT('%,', m.mid, ',%') WHERE m.mid = #{mid}), now())
     </insert>
 
-    <delete id="delUserInfo">
-      DELETE FROM user where uid in
+    <!--<delete id="delUserInfo">
+      DELETE FROM employee where id in
       <foreach collection="ids" item="id" open="(" close=")" separator=",">
           #{id}
       </foreach>
-    </delete>
-
+    </delete>-->
+    <update id="delUserInfo">
+        update employee set recsts = 'D' where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </update>
     <delete id="delEvent">
         DELETE FROM myevent where eid = #{eid}
     </delete>
@@ -50,12 +52,15 @@
         </foreach>
     </select>
 
-    <select id="getAllUser" resultType="employee">
+    <select id="getAllEmployee" resultType="employee">
         select u.id, u.name, u.login_no, u.password, u.cellphone, u.cellphone, u.role_id, u.headicon,
         u.weixin, u.qq, u.birthday, u.age, u.sex, u.post_id,
+        (select rname from role r where r.rid = u.role_id) rname,
+        (select dep_name from department d where d.dep_id = u.dep_id) dep_name,
         (select data_name from bs_basedict where dict_code = 'ZW001' and data_code = post_id) post,
         u.dep_id from employee u
         <where>
+            recsts = '1'
             <if test="loginNo !=null and loginNo!=''">
                and login_no like CONCAT('%', #{loginNo}, '%')
             </if>
@@ -104,17 +109,16 @@
     </select>
 
     <select id="getUserDetail" resultType="employee">
-        select uid, user_no, username, cellphone, age, sex, birthday, telephone, weixin, qq, dep_id,
-        (select dep_name from department d where d.dep_id = u.dep_id) dep_name, agency_ids, post_id from user u where uid = #{id}
+        select u.id, u.login_no, u.name, u.cellphone, u.age, u.sex, u.birthday,  u.weixin, u.qq,u.recsts,
+        (select rname from role r where r.rid = u.role_id) rname, u.dep_id, u.password,
+        (select dep_name from department d where d.dep_id = u.dep_id) dep_name, post_id from employee u where id = #{id}
     </select>
     <select id="getCountWithLoginNo" resultType="int" parameterType="employee">
-        SELECT count(*) from user
-        <where>
-            user_no = #{user_no}
-            <if test="uid != null and uid != ''">
-               and uid != #{uid}
-            </if>
-        </where>
+        SELECT count(*) from employee
+        where login_no=#{loginNo}
+        <if test="id != null and id != ''">
+          and id != #{id}
+        </if>
     </select>
 
     <select id="getUserByMenuId" resultType="map">
@@ -167,9 +171,9 @@
     </update>
 
     <update id="updUserInfo" parameterType="employee">
-        update user set username = #{username}, user_no = #{user_no}, sex = #{sex}, age = #{age},
-         birthday = #{birthday}, qq = #{qq}, weixin = #{weixin}, cellphone = #{cellphone}, telephone = #{telephone},
-          dep_id = #{dep_id}, upddate = now(), upduser = #{upduser}, post_id = #{post_id}, agency_ids = #{agency_ids} where uid = #{uid}
+        update employee set name = #{name}, login_no = #{loginNo}, sex = #{sex}, age = #{age},
+         birthday = #{birthday}, qq = #{qq}, weixin = #{weixin}, cellphone = #{cellphone},
+          dep_id = #{depId}, `update` = now(), upduser = #{upduser}, post_id = #{postId} where id = #{id}
     </update>
 
     <update id="updRoleName">

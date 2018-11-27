@@ -19,7 +19,7 @@ public interface EmployeeDao {
 
     void updateUserHeadIcon(@Param("uid") long uid, @Param("headicon") String headicon);
 
-    List<Employee> getAllUser(Employee employee);
+    List<Employee> getAllEmployee(Employee employee);
 
     void delUserInfo(@Param("ids") List<String> ids);
 

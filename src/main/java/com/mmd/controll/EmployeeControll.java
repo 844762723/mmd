@@ -62,10 +62,11 @@ public class EmployeeControll {
         return employeeService.updPass(param);
     }
 
-    @RequestMapping("/getAllUser")
+    @RequestMapping("/getAllEmployee")
     public @ResponseBody
     ResultPage getAllUser(Page page, Employee employee) {
-        return employeeService.getAllUser(page, employee);
+        return employeeService.getAllEmployee(page, employee);
+
     }
 
     @RequestMapping("/CRUD_UserInfo")
@@ -198,13 +199,13 @@ public class EmployeeControll {
         ModelAndView modelAndView = new ModelAndView();
         Employee employee = employeeService.getUserDetail(id);
         modelAndView.addObject("employee", employee);
-        modelAndView.setViewName("../content/user/userdetail.jsp");
+        modelAndView.setViewName("../content/employee/employeedetail.jsp");
         return modelAndView;
     }
 
-    @RequestMapping("addOrUpdUser")
-    public @ResponseBody Result addOrUpdUser(Employee employee) {
-        return employeeService.addOrUpdUser(employee);
+    @RequestMapping("addUpdEmployee")
+    public @ResponseBody Result addUpdEmployee(Employee employee) {
+        return employeeService.addUpdEmployee(employee);
     }
 
 
